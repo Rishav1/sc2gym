@@ -19,6 +19,7 @@ import gym
 from pysc2.env import sc2_env
 from pysc2.env.environment import StepType
 from pysc2.lib import actions
+from pysc2.agents import base_agent
 
 __author__ = 'Islam Elnabarawy'
 
@@ -35,7 +36,6 @@ class SC2GameEnv(gym.Env):
         super().__init__()
         self._kwargs = kwargs
         self._env = None
-
         self._episode = 0
         self._num_step = 0
         self._episode_reward = 0
@@ -43,6 +43,10 @@ class SC2GameEnv(gym.Env):
 
     def _step(self, action):
         return self._safe_step(action)
+
+    def _seed(self, seed=None):
+        # TODO: Add random seed
+        return [seed]
 
     def _safe_step(self, action):
         self._num_step += 1
@@ -84,6 +88,9 @@ class SC2GameEnv(gym.Env):
 
     def _init_env(self):
         self._env = sc2_env.SC2Env(**self._kwargs)
+
+    def _render(self, mode='human', close=True):
+        return
 
     def _close(self):
         if self._episode > 0:

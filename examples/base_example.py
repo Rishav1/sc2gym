@@ -16,6 +16,8 @@
 import numpy as np
 import gym
 from absl import flags
+from pysc2.lib import point_flag
+from pysc2.env import sc2_env
 
 # noinspection PyUnresolvedReferences
 import sc2gym.envs
@@ -37,7 +39,12 @@ class BaseExample(object):
         env = gym.make(self.env_name)
         env.settings['visualize'] = self.visualize
         env.settings['step_mul'] = self.step_mul
-
+        env.settings['agent_interface_format'] = sc2_env.parse_agent_interface_format(feature_screen=84,
+                                                                                      feature_minimap=64,
+                                                                                      rgb_screen=None,
+                                                                                      rgb_minimap=None,
+                                                                                      action_space="features",
+                                                                                      use_feature_units=False)
         episode_rewards = np.zeros((num_episodes, ), dtype=np.int32)
         for ix in range(num_episodes):
             obs = env.reset()
